@@ -1,0 +1,97 @@
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background-color: #f0f2f5;
+}
+
+.register-card {
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.description {
+  display: block;
+  text-align: center;
+  margin-bottom: 24px;
+  color: #666;
+}
+
+.register-form {
+  margin-top: 24px;
+}
+
+.ant-form-item {
+  margin-bottom: 16px;
+}
+
+.ant-tabs-nav {
+  margin-bottom: 24px !important;
+}
+
+.register-form .ant-form-item {
+  margin-bottom: 16px;
+}
+
+.register-form .ant-input-prefix {
+  color: #bfbfbf;
+}
+
+.register-form .ant-btn {
+  height: 45px;
+  font-size: 16px;
+}
+
+.register-form .ant-form-item-label {
+  padding-bottom: 4px;
+}
+
+.register-form .ant-input,
+.register-form .ant-input-password,
+.register-form .ant-select-selector,
+.register-form .ant-picker {
+  border-radius: 4px;
+}
+
+.register-form .ant-input:focus,
+.register-form .ant-input-password:focus,
+.register-form .ant-select-selector:focus,
+.register-form .ant-picker:focus {
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+.register-form .ant-form-item-explain {
+  font-size: 12px;
+}
+
+/* Animation */
+.register-card {
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .register-card {
+    max-width: 100%;
+    margin: 0 16px;
+  }
+} 
