@@ -2,6 +2,11 @@
 
 MediCare is a comprehensive healthcare appointment booking system built with the MERN stack (MongoDB, Express, React, Node.js). The platform connects patients with healthcare professionals, making it easy to find doctors, book appointments, and manage healthcare needs.
 
+## Live Demo
+
+- **Frontend**: [https://medicare-frontend.pages.dev/](https://medicare-frontend.pages.dev/)
+- **Backend API**: [https://medicare-api.likithmvjce.workers.dev](https://medicare-api.likithmvjce.workers.dev)
+
 ## Features
 
 - **User Authentication**: Separate login and registration for patients and doctors
@@ -17,6 +22,7 @@ MediCare is a comprehensive healthcare appointment booking system built with the
 - **Backend**: Node.js, Express
 - **Database**: MongoDB
 - **Authentication**: JWT (JSON Web Tokens)
+- **Deployment**: Cloudflare Pages and Workers
 
 ## Installation and Setup
 
@@ -55,6 +61,35 @@ MediCare is a comprehensive healthcare appointment booking system built with the
 5. Run the application (development mode)
    ```
    npm run dev
+   ```
+
+## Deployment
+
+This project has been deployed to Cloudflare Pages and Workers. For detailed deployment information, see [DEPLOYMENT_INFO.md](DEPLOYMENT_INFO.md).
+
+### Quick Deployment Steps
+
+1. Install Wrangler CLI
+   ```
+   npm install -g wrangler
+   ```
+
+2. Login to Cloudflare
+   ```
+   wrangler login
+   ```
+
+3. Deploy the frontend
+   ```
+   cd client
+   npm run build
+   wrangler pages deploy build
+   ```
+
+4. Deploy the backend
+   ```
+   cd ..
+   wrangler deploy worker.js
    ```
 
 ## Project Structure

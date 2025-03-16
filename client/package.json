@@ -16,7 +16,10 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "npm run build && wrangler pages publish build --project-name medicare-frontend",
+    "deploy:staging": "npm run build && wrangler pages publish build --project-name medicare-frontend --branch staging",
+    "deploy:production": "npm run build && wrangler pages publish build --project-name medicare-frontend --branch main"
   },
   "eslintConfig": {
     "extends": [

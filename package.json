@@ -8,7 +8,11 @@
     "start": "node server.js",
     "server": "nodemon server.js",
     "client": "npm start --prefix ./client ",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "deploy:api": "wrangler publish",
+    "deploy:api:staging": "wrangler publish --env staging",
+    "deploy:api:production": "wrangler publish --env production",
+    "deploy:all": "npm run deploy:api && cd client && npm run deploy"
   },
   "keywords": [
     "doctor",
@@ -23,6 +27,7 @@
   "author": "Likith Yadav",
   "license": "MIT",
   "dependencies": {
+    "@cloudflare/kv-asset-handler": "^0.4.0",
     "bcryptjs": "^2.4.3",
     "caniuse-lite": "^1.0.30001705",
     "colors": "^1.4.0",

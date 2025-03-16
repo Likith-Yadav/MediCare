@@ -1,0 +1,24 @@
+name = "medicare-api"
+account_id = "1916833baf2f14150a64c373a066f53f" # Your Cloudflare account ID
+workers_dev = true
+compatibility_date = "2023-01-01"
+
+[build]
+command = "npm install"
+
+[vars]
+MONGO_URL = "mongodb+srv://likithmvjce:Likith2392@appointment.7vh1z.mongodb.net/doctorapp?retryWrites=true&w=majority"
+JWT_SECRET = "f91cf37c7c4a4f6c9e42b8fe4ebfd7239c9c4182d95678b5bfb2040847b42851"
+NODE_MODE = "production"
+
+[env.production]
+name = "medicare-api-production"
+vars = { NODE_MODE = "production" }
+
+[env.staging]
+name = "medicare-api-staging"
+vars = { NODE_MODE = "staging" }
+
+[[kv_namespaces]]
+binding = "MEDICARE_KV"
+id = "b2bd674304604946a9213c484350d914" 
