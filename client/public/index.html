@@ -7,7 +7,7 @@
     <meta name="theme-color" content="#000000" />
     <meta
       name="description"
-      content="Web site created using create-react-app"
+      content="MediCare - Doctor Appointment System"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
     <!--
@@ -22,7 +22,21 @@
       crossorigin="anonymous"
     />
 
-    <title>Doctor Appointment System</title>
+    <title>MediCare - Doctor Appointment System</title>
+    
+    <!-- Handle redirects from 404.html -->
+    <script>
+      // Check if we have a path parameter from a redirect
+      (function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const path = urlParams.get('path');
+        
+        if (path) {
+          // Remove the query parameter
+          window.history.replaceState(null, null, path);
+        }
+      })();
+    </script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
