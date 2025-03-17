@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: doctor-appointment-backend
+    env: node
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: MONGODB_URL
+        value: mongodb+srv://likithmvjce:Likith2392@appointment.7vh1z.mongodb.net/doctorapp?retryWrites=true&w=majority
+      - key: JWT_SECRET
+        value: f91cf37c7c4a4f6c9e42b8fe4ebfd7239c9c4182d95678b5bfb2040847b42851
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080 
