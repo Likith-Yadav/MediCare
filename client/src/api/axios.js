@@ -3,16 +3,9 @@ import axios from 'axios';
 // Use environment variable for API URL or default to local development
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
 
-// For Cloudflare deployment, we'll use the Worker URL
-const CLOUDFLARE_API_URL = 'https://medicare-api.yourusername.workers.dev';
-
-// Determine which URL to use based on environment
-const baseURL = process.env.NODE_ENV === 'production' 
-  ? CLOUDFLARE_API_URL 
-  : API_URL;
-
+// Create axios instance with the correct baseURL
 const api = axios.create({
-    baseURL,
+    baseURL: API_URL,
     headers: {
         'Content-Type': 'application/json'
     }

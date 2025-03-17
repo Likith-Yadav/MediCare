@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Row, Col, Card, Select, Input, Button, Tag, Rate, Avatar, Divider, Typography, Empty, Spin, notification } from 'antd';
 import { UserOutlined, PhoneOutlined, MailOutlined, ClockCircleOutlined, DollarOutlined, SearchOutlined, FilterOutlined, HeartOutlined, HeartFilled } from '@ant-design/icons';
-import axios from 'axios';
+import api from '../api/axios';
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -26,7 +26,7 @@ const FindDoctors = () => {
       setError('');
       
       try {
-        const response = await axios.get('/api/v1/user/doctors');
+        const response = await api.get('/api/v1/user/doctors');
         
         if (response.data?.success) {
           const doctorData = response.data.data;
