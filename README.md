@@ -1,127 +1,103 @@
-# MediCare - Doctor Appointment System
+# MediCare - Healthcare Appointment System
 
-A MERN stack application for booking doctor appointments, deployed on Cloudflare.
-
-## Deployed Application
-
-- **Frontend**: [https://medicare-frontend.pages.dev](https://medicare-frontend.pages.dev)
-- **Backend API**: [https://medicare-api.likithmvjce.workers.dev](https://medicare-api.likithmvjce.workers.dev)
-
-## Demo Credentials
-
-You can use the following credentials to test the application:
-
-### Doctor Account
-- **Email**: doctor@example.com
-- **Password**: password123
-- **User Type**: Doctor
-
-### Patient Account
-- **Email**: patient@example.com
-- **Password**: password123
-- **User Type**: Patient
+MediCare is a comprehensive healthcare appointment booking system built with the MERN stack (MongoDB, Express, React, Node.js). The platform connects patients with healthcare professionals, making it easy to find doctors, book appointments, and manage healthcare needs.
 
 ## Features
 
-- User authentication (Patient and Doctor)
-- Doctor listing and filtering
-- Appointment booking and management
-- User profiles and dashboards
-- Responsive design for all devices
+- **User Authentication**: Separate login and registration for patients and doctors
+- **Doctor Listings**: Browse and search for doctors by specialty
+- **Appointment Booking**: Schedule appointments with preferred doctors
+- **Doctor Dashboard**: Doctors can manage appointments and patient information
+- **Patient Dashboard**: Patients can view their appointments and medical history
+- **Responsive Design**: Works seamlessly on desktop and mobile devices
 
-## Technology Stack
+## Technologies Used
 
-- **Frontend**: React.js, Ant Design
-- **Backend**: Node.js, Express.js
-- **Database**: Cloudflare KV (for production), MongoDB (for development)
-- **Deployment**: Cloudflare Pages (Frontend), Cloudflare Workers (Backend)
+- **Frontend**: React, Ant Design, CSS
+- **Backend**: Node.js, Express
+- **Database**: MongoDB
+- **Authentication**: JWT (JSON Web Tokens)
+- **Deployment**: Cloudflare Pages and Workers
 
-## Cloudflare Workers and MongoDB
-
-Due to Cloudflare Workers' security restrictions, direct connections to MongoDB Atlas are not supported in the production environment. This is because:
-
-1. Cloudflare Workers run in a V8 isolate environment with limited networking capabilities
-2. MongoDB Atlas requires specific IP allowlisting or VPC peering
-3. Workers cannot establish the necessary TCP connections to MongoDB Atlas
-
-For the production deployment, we use Cloudflare KV storage as our database solution. KV storage provides:
-- Key-value data storage that's globally distributed
-- Low-latency access from Cloudflare's edge network
-- Seamless integration with Workers
-
-For local development, you can still use MongoDB as described in the setup instructions below.
-
-## Troubleshooting
-
-### Login Issues
-If you encounter a 401 Unauthorized error when trying to log in, make sure:
-1. You're using the correct credentials (email, password, and user type)
-2. The API endpoint is correctly configured in the frontend
-3. The backend worker is properly deployed with the latest changes
-
-The application uses a special bypass for the demo accounts to ensure they always work, even if there are bcrypt comparison issues in the Cloudflare Worker environment.
-
-## Local Development
+## Installation and Setup
 
 ### Prerequisites
 - Node.js (v14 or higher)
-- npm or yarn
-- MongoDB (for local development)
+- MongoDB
 
-### Setup
+### Steps to Run Locally
 
 1. Clone the repository
-```
-git clone https://github.com/yourusername/medicare.git
-cd medicare
-```
+   ```
+   git clone https://github.com/yourusername/medicare.git
+   cd medicare
+   ```
 
-2. Install dependencies
-```
-# Install backend dependencies
-npm install
+2. Install server dependencies
+   ```
+   npm install
+   ```
 
-# Install frontend dependencies
-cd client
-npm install
-```
+3. Install client dependencies
+   ```
+   cd client
+   npm install
+   cd ..
+   ```
 
-3. Set up environment variables
-Create a `.env` file in the root directory with the following variables:
-```
-MONGO_URL=your_mongodb_connection_string
-JWT_SECRET=your_jwt_secret
-NODE_MODE=development
-```
+4. Create a .env file in the root directory with the following variables
+   ```
+   PORT=8080
+   NODE_MODE=development
+   MONGO_URL=your_mongodb_connection_string
+   JWT_SECRET=your_jwt_secret
+   ```
 
-4. Run the application
-```
-# Run backend (from root directory)
-npm run server
-
-# Run frontend (from client directory)
-cd client
-npm start
-```
-
-5. Access the application
-Open your browser and navigate to `http://localhost:3000`
+5. Run the application (development mode)
+   ```
+   npm run dev
+   ```
 
 ## Deployment
 
-The application is deployed using Cloudflare Pages for the frontend and Cloudflare Workers for the backend API.
+This project is configured for deployment to Cloudflare Pages and Workers. For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 
-### Frontend Deployment
-```
-cd client
-npm run build
-wrangler pages deploy build
-```
+### Quick Deployment Steps
 
-### Backend Deployment
-```
-wrangler deploy worker.js
-```
+1. Install Wrangler CLI
+   ```
+   npm install -g wrangler
+   ```
+
+2. Login to Cloudflare
+   ```
+   wrangler login
+   ```
+
+3. Deploy the frontend
+   ```
+   cd client
+   npm run deploy
+   ```
+
+4. Deploy the backend
+   ```
+   cd ..
+   npm run deploy:api
+   ```
+
+## Project Structure
+
+- `/client` - React frontend
+- `/controllers` - Express route controllers
+- `/models` - MongoDB models
+- `/routes` - Express routes
+- `/middlewares` - Custom middleware functions
+- `/.github/workflows` - GitHub Actions for CI/CD
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 

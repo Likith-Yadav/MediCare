@@ -1,0 +1,21 @@
+name = "medicare-frontend"
+type = "webpack"
+account_id = "" # Your Cloudflare account ID
+workers_dev = true
+route = ""
+zone_id = ""
+compatibility_date = "2023-01-01"
+
+[site]
+bucket = "./build"
+entry-point = "."
+
+[build]
+command = "npm run build"
+upload.format = "service-worker"
+
+[env.production]
+name = "medicare-frontend-production"
+
+[env.staging]
+name = "medicare-frontend-staging" 

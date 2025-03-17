@@ -1,126 +1,116 @@
 # Deployment Guide for MediCare
 
-This guide provides detailed instructions for deploying the MediCare application to Cloudflare.
+This guide will help you deploy the MediCare application to Cloudflare Pages and Workers.
 
 ## Prerequisites
 
-- Cloudflare account
-- Node.js and npm installed
-- Wrangler CLI installed (`npm install -g wrangler`)
+1. A Cloudflare account
+2. Node.js installed on your local machine
+3. Wrangler CLI installed (`npm install -g wrangler`)
 
-## Frontend Deployment (Cloudflare Pages)
+## Deploying the Frontend to Cloudflare Pages
 
-1. **Build the React application**
+1. **Login to Cloudflare using Wrangler**
 
-```bash
-cd client
-npm run build
-```
+   ```bash
+   wrangler login
+   ```
+
+   This will open a browser window to authenticate with your Cloudflare account.
 
 2. **Create a Cloudflare Pages project**
 
-```bash
-wrangler pages project create medicare-frontend
-```
+   ```bash
+   cd client
+   wrangler pages project create medicare-frontend
+   ```
 
-3. **Deploy the build folder to Cloudflare Pages**
+3. **Build and deploy the frontend**
 
-```bash
-wrangler pages deploy build
-```
+   ```bash
+   npm run deploy
+   ```
 
-4. **Configure environment variables (if needed)**
+   This will build the React application and deploy it to Cloudflare Pages.
 
-You can set environment variables in the Cloudflare Pages dashboard:
-- Go to your Pages project
-- Navigate to Settings > Environment variables
-- Add variables like `REACT_APP_API_URL` if needed
+## Deploying the Backend API to Cloudflare Workers
 
-## Backend Deployment (Cloudflare Workers)
+1. **Update the `wrangler.toml` file**
 
-1. **Create a KV namespace for data storage**
+   Open the `wrangler.toml` file in the root directory and update the following fields:
+   
+   - `account_id`: Your Cloudflare account ID
+   - `zone_id`: (Optional) Your Cloudflare zone ID if you're using a custom domain
+   - `kv_namespaces.id`: Create a KV namespace in the Cloudflare dashboard and add the ID here
 
-```bash
-wrangler kv namespace create "MEDICARE_KV"
-```
+2. **Deploy the API**
 
-2. **Update wrangler.toml with your account ID and KV namespace**
+   ```bash
+   npm run deploy:api
+   ```
 
-```toml
-name = "medicare-api"
-account_id = "your_account_id"
+   This will deploy the Worker script to Cloudflare Workers.
 
-kv_namespaces = [
-  { binding = "MEDICARE_KV", id = "your_kv_namespace_id" }
-]
+## Connecting the Frontend to the Backend
 
-[vars]
-NODE_MODE = "production"
-JWT_SECRET = "your_jwt_secret"
-```
+1. **Update the API URL in the frontend**
 
-3. **Deploy the Worker**
+   Open `client/src/api/axios.js` and update the `CLOUDFLARE_API_URL` variable with your Worker URL:
 
-```bash
-wrangler deploy worker.js
-```
+   ```javascript
+   const CLOUDFLARE_API_URL = 'https://medicare-api.yourusername.workers.dev';
+   ```
+
+2. **Redeploy the frontend**
+
+   ```bash
+   cd client
+   npm run deploy
+   ```
+
+## Setting Up a Custom Domain (Optional)
+
+1. **Add your domain to Cloudflare**
+
+   Follow the Cloudflare documentation to add your domain to your Cloudflare account.
+
+2. **Configure custom domains in Cloudflare Pages and Workers**
+
+   - For Pages: Go to the Pages project settings and add your custom domain (e.g., `medicare.yourdomain.com`)
+   - For Workers: Go to the Workers settings and add a route for your API (e.g., `api.medicare.yourdomain.com/*`)
+
+## Environment Variables
+
+For production deployments, you should set up environment variables in the Cloudflare dashboard:
+
+1. **For the frontend (Pages)**:
+   - Go to your Pages project settings
+   - Navigate to the "Environment variables" tab
+   - Add variables like `REACT_APP_API_URL`
+
+2. **For the backend (Workers)**:
+   - Go to your Worker settings
+   - Navigate to the "Environment variables" tab
+   - Add variables like `JWT_SECRET`, `MONGO_URL`, etc.
+
+## Continuous Deployment
+
+You can set up continuous deployment by connecting your GitHub repository to Cloudflare Pages and Workers:
+
+1. **For Pages**:
+   - Go to the Pages dashboard
+   - Click "Create a project"
+   - Connect your GitHub repository
+   - Configure the build settings (Build command: `npm run build`, Build output directory: `build`)
+
+2. **For Workers**:
+   - Use GitHub Actions to deploy your Worker on push
+   - Create a `.github/workflows/deploy.yml` file with the appropriate configuration
 
 ## Troubleshooting
 
-### Common Issues
+- **CORS issues**: Make sure your Worker is configured to handle CORS properly
+- **Build failures**: Check the build logs in the Cloudflare dashboard
+- **API connection issues**: Verify that the API URL in the frontend is correct
 
-1. **CORS errors**
-   - Ensure the CORS headers are properly set in the worker.js file
-   - Check that the frontend is using the correct API URL
-
-2. **Authentication issues**
-   - Verify that the JWT_SECRET is correctly set in the worker environment
-   - Check that the token is being properly sent from the frontend
-
-3. **Database connection issues**
-   - If using MongoDB, ensure the connection string is correct
-   - For KV storage, verify the namespace binding is correct
-
-### Logs and Debugging
-
-To view logs from your Worker:
-
-```bash
-wrangler tail
-```
-
-## Updating the Deployment
-
-### Frontend Updates
-
-1. Make changes to the frontend code
-2. Rebuild the application: `npm run build`
-3. Redeploy: `wrangler pages deploy build`
-
-### Backend Updates
-
-1. Make changes to the worker.js file
-2. Redeploy: `wrangler deploy worker.js`
-
-## Custom Domains
-
-To set up a custom domain for your application:
-
-1. **For Pages (Frontend)**
-   - Go to your Pages project in the Cloudflare dashboard
-   - Navigate to Custom domains
-   - Add your domain and follow the verification steps
-
-2. **For Workers (Backend)**
-   - Go to your Workers project in the Cloudflare dashboard
-   - Navigate to Triggers > Custom Domains
-   - Add your domain and configure the DNS settings
-
-## Monitoring and Analytics
-
-Cloudflare provides built-in analytics for both Pages and Workers:
-
-- **Pages Analytics**: View in the Pages project dashboard
-- **Workers Analytics**: View in the Workers project dashboard
-
-These analytics include metrics like requests, bandwidth usage, and error rates. 
+For more help, refer to the [Cloudflare Pages documentation](https://developers.cloudflare.com/pages/) and [Cloudflare Workers documentation](https://developers.cloudflare.com/workers/). 

@@ -1,32 +1,35 @@
 import axios from 'axios';
 
-// Define API URLs
+// Use environment variable for API URL or default to local development
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:8080';
-const CLOUDFLARE_API_URL = 'https://medicare-api.likithmvjce.workers.dev';
+
+// For Cloudflare deployment, we'll use the Worker URL
+const CLOUDFLARE_API_URL = 'https://medicare-api.yourusername.workers.dev';
 
 // Determine which URL to use based on environment
-const baseURL = process.env.NODE_ENV === 'production' ? CLOUDFLARE_API_URL : API_URL;
+const baseURL = process.env.NODE_ENV === 'production' 
+  ? CLOUDFLARE_API_URL 
+  : API_URL;
 
-// Create axios instance
-const axiosInstance = axios.create({
-  baseURL,
-  headers: {
-    'Content-Type': 'application/json'
-  }
+const api = axios.create({
+    baseURL,
+    headers: {
+        'Content-Type': 'application/json'
+    }
 });
 
-// Add request interceptor to include token
-axiosInstance.interceptors.request.use(
-  (config) => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+// Add a request interceptor to include the token
+api.interceptors.request.use(
+    (config) => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            config.headers['Authorization'] = `Bearer ${token}`;
+        }
+        return config;
+    },
+    (error) => {
+        return Promise.reject(error);
     }
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
 );
 
-export default axiosInstance; 
+export default api; 

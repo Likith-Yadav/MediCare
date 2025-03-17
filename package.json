@@ -27,7 +27,6 @@
   "author": "Likith Yadav",
   "license": "MIT",
   "dependencies": {
-    "@cloudflare/kv-asset-handler": "^0.4.0",
     "bcryptjs": "^2.4.3",
     "caniuse-lite": "^1.0.30001705",
     "colors": "^1.4.0",
@@ -37,7 +36,6 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.30.1",
-    "mongodb": "^6.14.2",
     "mongoose": "^6.7.2",
     "morgan": "^1.10.0",
     "nodemon": "^2.0.20"
