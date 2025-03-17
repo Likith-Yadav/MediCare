@@ -4,11 +4,11 @@
   "exclude": [
     "/build/*",
     "/static/*",
-    "/manifest.json",
-    "/favicon.ico",
-    "/logo192.png",
-    "/logo512.png",
-    "/robots.txt"
+    "/*.ico",
+    "/*.png",
+    "/*.svg",
+    "/*.jpg",
+    "/*.json"
   ],
   "routes": [
     {
