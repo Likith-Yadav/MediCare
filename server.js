@@ -15,7 +15,12 @@ connectDB();
 const app = express();
 
 //middlewares
-app.use(cors());
+app.use(cors({
+  origin: process.env.NODE_ENV === 'production' 
+    ? 'https://medicare-v934.onrender.com'  // Production frontend URL
+    : 'http://localhost:3000',  // Development frontend URL
+  credentials: true
+}));
 app.use(express.json());
 app.use(morgan("dev"));
 
