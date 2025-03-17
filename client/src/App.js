@@ -9,6 +9,7 @@ import PatientDashboard from './pages/PatientDashboard';
 import FindDoctors from './pages/FindDoctors';
 import AboutUs from './pages/AboutUs';
 import Contact from './pages/Contact';
+import NotFound from './pages/NotFound';
 import { ProtectedRoute, PublicRoute } from './components/ProtectedRoute';
 import './styles/Layout.css';
 import 'antd/dist/reset.css';
@@ -31,7 +32,7 @@ function App() {
           <Route path="/patient-dashboard" element={<ProtectedRoute><PatientDashboard /></ProtectedRoute>} />
 
           {/* Fallback Route */}
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Layout>
     </BrowserRouter>
