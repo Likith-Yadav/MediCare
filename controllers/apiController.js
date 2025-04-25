@@ -79,10 +79,22 @@ const getDoctorAvailability = async (req, res) => {
 // POST /api/appointments
 const requestAppointment = async (req, res) => {
     try {
-        const { patientId, doctorId, date, time, reason, symptoms } = req.body;
+        const { 
+            doctorId, 
+            patientId,
+            patientName, 
+            patientEmail, 
+            patientPhone,
+            externalPatientId,
+            date, 
+            time, 
+            reason, 
+            symptoms,
+            notes 
+        } = req.body;
 
         // Basic validation
-        if (!patientId || !doctorId || !date || !time) {
+        if (!doctorId || !date || !time) {
             return sendErrorResponse(res, 400, "Missing required appointment details");
         }
 
@@ -92,25 +104,46 @@ const requestAppointment = async (req, res) => {
             return sendErrorResponse(res, 404, "Doctor not found");
         }
 
-        // Check if patient exists
-        const patient = await userModel.findById(patientId);
-        if (!patient || patient.userType !== 'patient') {
-            return sendErrorResponse(res, 404, "Patient not found");
+        // Create appointment data
+        const appointmentData = {
+            doctorId,
+            date: moment(date, 'YYYY-MM-DD').toDate(),
+            time,
+            status: 'pending',
+            reason: reason || "",
+            symptoms: symptoms || "",
+            notes: notes || ""
+        };
+
+        // Handle patient data - either use existing patient ID or external patient data
+        if (patientId) {
+            // If patientId is provided, verify it exists in the database
+            const patient = await userModel.findById(patientId);
+            if (!patient || patient.userType !== 'patient') {
+                return sendErrorResponse(res, 404, "Patient not found");
+            }
+            appointmentData.patientId = patientId;
+        } else if (patientEmail) {
+            // If patientId is not provided, check if user exists with this email
+            const existingPatient = await userModel.findOne({ email: patientEmail, userType: 'patient' });
+            
+            if (existingPatient) {
+                // Use existing patient if found
+                appointmentData.patientId = existingPatient._id;
+            } else {
+                // Store external patient data when no MongoDB patient ID is available
+                appointmentData.externalPatient = {
+                    name: patientName || "External Patient",
+                    email: patientEmail,
+                    phone: patientPhone || "",
+                    externalId: externalPatientId || ""
+                };
+            }
+        } else {
+            return sendErrorResponse(res, 400, "Missing patient information");
         }
 
-        // TODO: Add logic to check if the requested slot is actually available
-        // This would involve checking doctor.timings and existing appointments
-
-        const newAppointment = new appointmentModel({
-            patientId,
-            doctorId,
-            date: moment(date, 'YYYY-MM-DD').toDate(), // Ensure date format
-            time,
-            status: 'pending', // Initial status
-            reason: reason || "",
-            symptoms: symptoms || ""
-        });
-
+        const newAppointment = new appointmentModel(appointmentData);
         await newAppointment.save();
 
         res.status(201).json({

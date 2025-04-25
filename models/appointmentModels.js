@@ -9,7 +9,25 @@ const appointmentSchema = new mongoose.Schema({
   patientId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'users',
-    required: true
+    required: function() { return !this.externalPatient; }
+  },
+  externalPatient: {
+    name: {
+      type: String,
+      default: ""
+    },
+    email: {
+      type: String,
+      default: ""
+    },
+    phone: {
+      type: String,
+      default: ""
+    },
+    externalId: {
+      type: String,
+      default: ""
+    }
   },
   date: {
     type: Date,
