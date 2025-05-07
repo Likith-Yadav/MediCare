@@ -91,7 +91,6 @@ const DoctorDashboard = () => {
       // Get token from localStorage
       const token = localStorage.getItem('token');
       if (!token) {
-        message.error('You must be logged in to update appointment status');
         return;
       }
 
@@ -114,15 +113,11 @@ const DoctorDashboard = () => {
         });
         if (updatedResponse.data?.success) {
           setAppointments(updatedResponse.data.data);
-        } else {
-          message.error('Failed to refresh appointments');
         }
-      } else {
-        message.error(response.data?.message || 'Failed to update appointment status');
       }
     } catch (error) {
       console.error('Failed to update appointment status:', error);
-      message.error(error.response?.data?.message || 'Failed to update appointment status. Please try again.');
+      // Silently handle error - don't show message
     }
   };
 
