@@ -229,15 +229,17 @@ const updateAppointmentStatusController = async (req, res) => {
     }
     
     // Create notification for patient
-    await notificationModel.create({
-      userId: appointment.patientId._id,
-      title: `Appointment ${status}`,
-      message: `Your appointment on ${moment(appointment.date).format('MMMM Do, YYYY')} at ${appointment.time} has been ${status} by the doctor.`,
-      read: false,
-      type: 'appointment',
-      relatedTo: appointment._id,
-      priority: status === 'rejected' ? 'high' : 'medium'
-    });
+    if (appointment.patientId) {
+      await notificationModel.create({
+        userId: appointment.patientId._id,
+        title: `Appointment ${status}`,
+        message: `Your appointment on ${moment(appointment.date).format('MMMM Do, YYYY')} at ${appointment.time} has been ${status} by the doctor.`,
+        read: false,
+        type: 'appointment',
+        relatedTo: appointment._id,
+        priority: status === 'rejected' ? 'high' : 'medium'
+      });
+    }
     
     res.status(200).send({
       success: true,
@@ -259,4 +261,4 @@ module.exports = {
   getPatientAppointmentsController,
   getDoctorAppointmentsController,
   updateAppointmentStatusController
-}; 
+};

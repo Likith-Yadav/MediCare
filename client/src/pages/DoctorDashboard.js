@@ -104,7 +104,7 @@ const DoctorDashboard = () => {
         }
       });
 
-      if (response.data.success) {
+      if (response.data?.success) {
         message.success(`Appointment ${status} successfully`);
         // Refresh appointments
         const updatedResponse = await api.get('/api/v1/appointment/doctor', {
@@ -112,11 +112,17 @@ const DoctorDashboard = () => {
             Authorization: `Bearer ${token}`
           }
         });
-        setAppointments(updatedResponse.data.data);
+        if (updatedResponse.data?.success) {
+          setAppointments(updatedResponse.data.data);
+        } else {
+          message.error('Failed to refresh appointments');
+        }
+      } else {
+        message.error(response.data?.message || 'Failed to update appointment status');
       }
     } catch (error) {
       console.error('Failed to update appointment status:', error);
-      message.error('Failed to update appointment status');
+      message.error(error.response?.data?.message || 'Failed to update appointment status. Please try again.');
     }
   };
 
