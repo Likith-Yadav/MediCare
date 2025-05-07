@@ -159,7 +159,7 @@ const DoctorDashboard = () => {
               <Card style={{ width: '100%' }}>
                 <List.Item.Meta
                   avatar={<UserOutlined style={{ fontSize: '32px' }} />}
-                  title={appointment.patientId.name}
+                  title={appointment.patientId?.name || appointment.externalPatient?.name || 'Unknown Patient'}
                   description={
                     <>
                       <Text>Date: {moment(appointment.date).format('MMMM Do, YYYY')}</Text>
